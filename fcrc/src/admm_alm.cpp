@@ -261,4 +261,144 @@ List alm_cgl_int(vec const J, mat const K, mat const L, uvec const index,
                       Named("iter") = iter));
 }
 
+// internal step Augmented Lagrangian Method for a regularization path
+// solves Lρ(beta, u) = -t(beta)*J + 0.5*t(beta)*K*beta + lambda*sum(||theta_j||_2) + t(u)*L*beta
+// if varying_gamma = T, the penalty parameter associated to the internal ADMM varies each iteration 
+// else it varies only at the first internal ADMM iteration
+// [[Rcpp::export]]
+List alm_cgl_path_int(vec const J, mat const K, mat const L, uvec const index, 
+                      vec u, vec u_int, vec beta, vec const lambda_path, double rho, 
+                      double const max_rho, double gamma, bool const varying_gamma = true, 
+                      double const eps = 1e-5, int const max_iter = 100L, int const max_iter_int = 1000L, 
+                      double const abs_tol_int = 1e-6, double const rel_tol_int = 1e-4) {
+  
+  // inizialization results path
+  int const n_lambdas = lambda_path.n_elem;
+  int const n_coef = beta.n_elem;
+  mat res_beta(n_coef, n_lambdas);
+  vec res_iter = zeros(n_lambdas);
+  
+  for(uword i = 0; i < n_lambdas; ++i){
+    
+    double const lambda = lambda_path(i);
+    vec err = zeros(max_iter);
+    vec rho_list = zeros(max_iter);
+    vec gamma_hist = zeros(max_iter);
+    double rho_old = rho;
+    vec niter_int = zeros(max_iter);
+    
+    mat xtxr = K + rho*L.t()*L;
+    uword const p = xtxr.n_cols;
+    uvec const grps = unique(index);
+    uword const n_groups = grps.n_rows;
+    vec xty = zeros(size(J));
+  
+    // iterations start
+    uword iter = 1;
+    while (iter <= max_iter) {
+      vec beta_old = beta;
+      rho_list(iter-1) = rho;
+      
+      if (rho_old != rho) {
+        xtxr = K + rho*L.t()*L;
+      } else {
+        xty = J - L.t()*u; 
+      }
+      
+      // beta update
+      vec theta = beta;
+      vec beta_int = beta;
+      mat xtxr_V;
+      vec xtxr_D;
+      eig_sym(xtxr_D, xtxr_V, xtxr);
+      mat xtxr_inv = xtxr_V*diagmat(pow(xtxr_D+gamma, -1.0))*xtxr_V.t();
+      vec r_norm = zeros(max_iter_int);
+      vec s_norm = zeros(max_iter_int);
+      vec eps_pri = zeros(max_iter_int);
+      vec eps_dual = zeros(max_iter_int);
+      double gamma_old = gamma;
+      vec beta_old_int = beta_int;
+      
+      // internal iterations start
+      uword iter_int = 1;
+      while(iter_int <= max_iter_int){
+        beta_old_int = beta_int;
+        if(gamma_old != gamma){
+          u_int = u_int*(gamma_old/gamma);
+          xtxr_inv = xtxr_V*diagmat(pow(xtxr_D+gamma, -1.0))*xtxr_V.t();
+        }
+        
+        // theta update
+        theta = xtxr_inv*(xty+gamma*(beta_int-u_int));
+        
+        // beta update
+        for(uword j = 0; j < n_groups; ++j){
+          uvec const idx = find(index == grps(j));
+          beta_int.elem(idx) = soft_thre_int(theta.elem(idx)+u_int.elem(idx), lambda/gamma);
+        }
+        
+        // u update
+        u_int = u_int + theta-beta_int;
+        
+        // stopping criteria from Boyd et al. 2011
+        r_norm(iter_int-1)= norm(theta-beta_int, 2); // primal residual
+        s_norm(iter_int-1) = norm(-gamma*(beta_int-beta_old_int), 2); // dual residual 
+        if(norm(theta, 2) > norm(-beta_int, 2)){
+          eps_pri(iter_int-1) = sqrt(p)*abs_tol_int+rel_tol_int*norm(theta, 2);
+        } else{
+          eps_pri(iter_int-1) = sqrt(p)*abs_tol_int+rel_tol_int*norm(-beta_int, 2); 
+        }
+        eps_dual(iter_int-1) = sqrt(p)*abs_tol_int+rel_tol_int*gamma*norm(u_int, 2); 
+        
+        // convergence check
+        if(varying_gamma | iter == 1){
+          if((r_norm(iter_int-1) < eps_pri(iter_int-1)) && (s_norm(iter_int-1) < eps_dual(iter_int-1)) && iter_int >= 100) break;
+        } else{
+          if((r_norm(iter_int-1) < eps_pri(iter_int-1)) && (s_norm(iter_int-1) < eps_dual(iter_int-1))) break;
+        }
+        
+        // varying penalty parameter
+        gamma_old = gamma;
+        if(varying_gamma | iter == 1) {
+          if(iter_int <= 50){
+            if(r_norm(iter_int-1) > 10*s_norm(iter_int-1)){
+              gamma = 2*gamma;
+            } else if(s_norm(iter_int-1) > 10*r_norm(iter_int-1)){
+              gamma = gamma/2;
+            } else gamma = gamma;
+          }
+        }
+        
+        iter_int += 1;
+      }
+      if(iter_int > max_iter_int) iter_int = max_iter_int; // if max_iter is reached, iter will be max_iter+1
+      niter_int(iter-1) = iter_int;
+      gamma_hist(iter-1) = gamma;
+      beta = beta_int;
+      
+      // u update
+      // varying rho according to Bertsekas, 1981 - pag 123
+      rho_old = rho;
+      err(iter-1) = max(abs(L*beta));
+      if (err(iter-1) < eps) {
+        break;
+      } else if (err(iter-1) > 0.25*max(abs(L*beta_old)) & rho < max_rho) {
+        rho = 10*rho_old;
+      } else {
+        u = u+rho*L*beta;
+      }
+      
+      iter += 1;
+    }
+    
+    if(iter > max_iter) iter = max_iter; // if max_iter is reached, iter will be max_iter+1
+    
+    // store results for i-th lambdas
+    res_beta.col(i) = beta;
+    res_iter(i) = iter;
+  }
+  
+  return(List::create(Named("res_beta") = res_beta, Named("res_iter") = res_iter));
+}
+
 

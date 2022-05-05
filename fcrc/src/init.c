@@ -10,10 +10,12 @@
 /* .Call calls */
 extern SEXP _fcrc_admm_grplasso_int(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
 extern SEXP _fcrc_alm_cgl_int(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
+extern SEXP _fcrc_alm_cgl_path_int(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
 
 static const R_CallMethodDef CallEntries[] = {
     {"_fcrc_admm_grplasso_int", (DL_FUNC) &_fcrc_admm_grplasso_int, 11},
     {"_fcrc_alm_cgl_int",       (DL_FUNC) &_fcrc_alm_cgl_int,       17},
+    {"_fcrc_alm_cgl_path_int",  (DL_FUNC) &_fcrc_alm_cgl_path_int,  17},
     {NULL, NULL, 0}
 };
 

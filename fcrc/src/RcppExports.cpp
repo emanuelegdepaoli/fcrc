@@ -60,3 +60,30 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// alm_cgl_path_int
+List alm_cgl_path_int(vec const J, mat const K, mat const L, uvec const index, vec u, vec u_int, vec beta, vec const lambda_path, double rho, double const max_rho, double gamma, bool const varying_gamma, double const eps, int const max_iter, int const max_iter_int, double const abs_tol_int, double const rel_tol_int);
+RcppExport SEXP _fcrc_alm_cgl_path_int(SEXP JSEXP, SEXP KSEXP, SEXP LSEXP, SEXP indexSEXP, SEXP uSEXP, SEXP u_intSEXP, SEXP betaSEXP, SEXP lambda_pathSEXP, SEXP rhoSEXP, SEXP max_rhoSEXP, SEXP gammaSEXP, SEXP varying_gammaSEXP, SEXP epsSEXP, SEXP max_iterSEXP, SEXP max_iter_intSEXP, SEXP abs_tol_intSEXP, SEXP rel_tol_intSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< vec const >::type J(JSEXP);
+    Rcpp::traits::input_parameter< mat const >::type K(KSEXP);
+    Rcpp::traits::input_parameter< mat const >::type L(LSEXP);
+    Rcpp::traits::input_parameter< uvec const >::type index(indexSEXP);
+    Rcpp::traits::input_parameter< vec >::type u(uSEXP);
+    Rcpp::traits::input_parameter< vec >::type u_int(u_intSEXP);
+    Rcpp::traits::input_parameter< vec >::type beta(betaSEXP);
+    Rcpp::traits::input_parameter< vec const >::type lambda_path(lambda_pathSEXP);
+    Rcpp::traits::input_parameter< double >::type rho(rhoSEXP);
+    Rcpp::traits::input_parameter< double const >::type max_rho(max_rhoSEXP);
+    Rcpp::traits::input_parameter< double >::type gamma(gammaSEXP);
+    Rcpp::traits::input_parameter< bool const >::type varying_gamma(varying_gammaSEXP);
+    Rcpp::traits::input_parameter< double const >::type eps(epsSEXP);
+    Rcpp::traits::input_parameter< int const >::type max_iter(max_iterSEXP);
+    Rcpp::traits::input_parameter< int const >::type max_iter_int(max_iter_intSEXP);
+    Rcpp::traits::input_parameter< double const >::type abs_tol_int(abs_tol_intSEXP);
+    Rcpp::traits::input_parameter< double const >::type rel_tol_int(rel_tol_intSEXP);
+    rcpp_result_gen = Rcpp::wrap(alm_cgl_path_int(J, K, L, index, u, u_int, beta, lambda_path, rho, max_rho, gamma, varying_gamma, eps, max_iter, max_iter_int, abs_tol_int, rel_tol_int));
+    return rcpp_result_gen;
+END_RCPP
+}

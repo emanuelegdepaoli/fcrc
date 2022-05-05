@@ -9,3 +9,7 @@ alm_cgl_int <- function(J, K, L, index, u, u_int, beta, lambda, rho, max_rho, ga
     .Call(`_fcrc_alm_cgl_int`, J, K, L, index, u, u_int, beta, lambda, rho, max_rho, gamma, varying_gamma, eps, max_iter, max_iter_int, abs_tol_int, rel_tol_int)
 }
 
+alm_cgl_path_int <- function(J, K, L, index, u, u_int, beta, lambda_path, rho, max_rho, gamma, varying_gamma = TRUE, eps = 1e-5L, max_iter = 100L, max_iter_int = 1000L, abs_tol_int = 1e-6L, rel_tol_int = 1e-4L) {
+    .Call(`_fcrc_alm_cgl_path_int`, J, K, L, index, u, u_int, beta, lambda_path, rho, max_rho, gamma, varying_gamma, eps, max_iter, max_iter_int, abs_tol_int, rel_tol_int)
+}
+
