@@ -1,0 +1,8 @@
+useDynLib(fcrc, .registration=TRUE)
+importFrom(Rcpp, evalCpp)
+import(foreach)
+import(parallel)
+import(doParallel)
+import(fda)
+import(ggplot2)
+exportPattern("^[[:alpha:]]+")
