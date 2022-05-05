@@ -237,7 +237,7 @@ cv_cgl = function(Y, Z, L, t, nfold = 10, k_range = 4:10, Zc = NULL, ncores = NU
     # delete file if it exists
     file.remove(outfile)
   }
-  cl =  makeCluster(ncores, outfile = outfile)
+  cl =  makeCluster(min(n_k*n_fold, ncores), outfile = outfile)
   registerDoParallel(cl)
   res_cv = foreach(i = 1:nfold, .packages = c("fda", "fcrc")) %:% 
     foreach(j = 1:n_k, .combine = "cbind") %dopar% {
