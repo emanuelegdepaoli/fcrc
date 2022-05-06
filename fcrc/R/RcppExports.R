@@ -5,6 +5,10 @@ admm_grplasso_int <- function(xty, xtx, index, lambda, beta_start, u_start, vary
     .Call(`_fcrc_admm_grplasso_int`, xty, xtx, index, lambda, beta_start, u_start, varying_rho, rho, abs_tol, rel_tol, max_iter)
 }
 
+admm_grplasso_path_int <- function(xty, xtx, index, lambda_path, beta_start, u_start, varying_rho = TRUE, rho = 1, abs_tol = 1e-4L, rel_tol = 1e-2L, max_iter = 1000L) {
+    .Call(`_fcrc_admm_grplasso_path_int`, xty, xtx, index, lambda_path, beta_start, u_start, varying_rho, rho, abs_tol, rel_tol, max_iter)
+}
+
 alm_cgl_int <- function(J, K, L, index, u, u_int, beta, lambda, rho, max_rho, gamma, varying_gamma = TRUE, eps = 1e-5L, max_iter = 100L, max_iter_int = 1000L, abs_tol_int = 1e-6L, rel_tol_int = 1e-4L) {
     .Call(`_fcrc_alm_cgl_int`, J, K, L, index, u, u_int, beta, lambda, rho, max_rho, gamma, varying_gamma, eps, max_iter, max_iter_int, abs_tol_int, rel_tol_int)
 }

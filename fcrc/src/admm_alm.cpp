@@ -129,6 +129,106 @@ List admm_grplasso_int(mat const xty, mat const xtx, uvec const index,
                      Named("eps_dual") = eps_dual.subvec(0, iter-1)));
 }
 
+// [[Rcpp::export]]
+List admm_grplasso_path_int(mat const xty, mat const xtx, uvec const index,
+                            vec const lambda_path, vec beta_start, vec u_start, 
+                            bool const varying_rho = true, double rho = 1, 
+                            double const abs_tol = 1e-4, double const rel_tol = 1e-2,
+                            int const max_iter = 1000L){
+  
+  // inizialization results path
+  int const n_lambdas = lambda_path.n_elem;
+  int const n_coef = beta_start.n_elem;
+  mat res_beta(n_coef, n_lambdas);
+  vec res_iter = zeros(n_lambdas);
+  
+  for(uword i = 0; i < n_lambdas; ++i){
+  
+    double const lambda = lambda_path(i);
+    // abs_tol and rel_tol should be 1e-3 or 1e-4
+    uword const p = xtx.n_cols;
+    uvec const grps = unique(index);
+    uword const n_groups = grps.n_rows;
+    vec beta = beta_start;
+    vec theta = beta_start;
+    vec u = u_start;
+    mat xtx_V;
+    vec xtx_D;
+    eig_sym(xtx_D, xtx_V, xtx);
+    mat xtxr_inv = xtx_V*diagmat(pow(xtx_D+rho, -1.0))*xtx_V.t();
+    vec objval = zeros(max_iter);
+    vec r_norm = zeros(max_iter);
+    vec s_norm = zeros(max_iter);
+    vec rho_list = zeros(max_iter);
+    vec eps_pri = zeros(max_iter);
+    vec eps_dual = zeros(max_iter);
+    double rho_old = rho;
+    vec beta_old = beta;
+    
+    // iterations start
+    uword iter = 1;
+    while(iter <= max_iter){
+      rho_list(iter-1) = rho;
+      beta_old = beta;
+      if(varying_rho && (rho_old != rho)){
+        u = u*(rho_old/rho);
+        xtxr_inv = xtx_V*diagmat(pow(xtx_D+rho, -1.0))*xtx_V.t();
+      }
+      
+      // theta update
+      theta = xtxr_inv*(xty+rho*(beta-u));
+      
+      // beta update
+      for(uword j = 0; j < n_groups; ++j){
+        uvec const idx = find(index == grps(j));
+        beta.elem(idx) = soft_thre_int(theta.elem(idx)+u.elem(idx), lambda/rho);
+      }
+      
+      // u update
+      u = u + theta-beta;
+      
+      // stopping criteria from Boyd et al. 2011
+      r_norm(iter-1)= norm(theta-beta, 2); // primal residual
+      s_norm(iter-1) = norm(-rho*(beta-beta_old), 2); // dual residual 
+      objval(iter-1) = obj_fun_grplasso_int(xty, xtx, theta, index, lambda);
+      if(norm(theta, 2) > norm(-beta, 2)){
+        eps_pri(iter-1) = sqrt(p)*abs_tol+rel_tol*norm(theta, 2);
+      } else{
+        eps_pri(iter-1) = sqrt(p)*abs_tol+rel_tol*norm(-beta, 2); 
+      }
+      eps_dual(iter-1) = sqrt(p)*abs_tol+rel_tol*rho*norm(u, 2); 
+      
+      // convergence check
+      if(varying_rho){
+        if((r_norm(iter-1) < eps_pri(iter-1)) && (s_norm(iter-1) < eps_dual(iter-1)) && iter >= 100) break;
+      } else{
+        if((r_norm(iter-1) < eps_pri(iter-1)) && (s_norm(iter-1) < eps_dual(iter-1))) break;
+      }
+      
+      // varying penalty parameter
+      rho_old = rho;
+      if((iter <= 50) && varying_rho){
+        if(r_norm(iter-1) > 10*s_norm(iter-1)){
+          rho = 2*rho;
+        } else if(s_norm(iter-1) > 10*r_norm(iter-1)){
+          rho = rho/2;
+        } else rho = rho;
+      }
+      
+      iter += 1;
+    }
+    
+    if(iter > max_iter) iter = max_iter; // if max_iter is reached, iter will be max_iter+1
+    // store results for i-th lambdas
+    res_beta.col(i) = beta;
+    res_iter(i) = iter;
+    beta_start = beta;
+    u_start = u;
+  }
+  
+  return(List::create(Named("res_beta") = res_beta, Named("res_iter") = res_iter));
+}
+
 
 // internal step Augmented Lagrangian Method 
 // solves Lρ(beta, u) = -t(beta)*J + 0.5*t(beta)*K*beta + lambda*sum(||theta_j||_2) + t(u)*L*beta

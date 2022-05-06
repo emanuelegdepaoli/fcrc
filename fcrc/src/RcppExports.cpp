@@ -33,6 +33,27 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// admm_grplasso_path_int
+List admm_grplasso_path_int(mat const xty, mat const xtx, uvec const index, vec const lambda_path, vec beta_start, vec u_start, bool const varying_rho, double rho, double const abs_tol, double const rel_tol, int const max_iter);
+RcppExport SEXP _fcrc_admm_grplasso_path_int(SEXP xtySEXP, SEXP xtxSEXP, SEXP indexSEXP, SEXP lambda_pathSEXP, SEXP beta_startSEXP, SEXP u_startSEXP, SEXP varying_rhoSEXP, SEXP rhoSEXP, SEXP abs_tolSEXP, SEXP rel_tolSEXP, SEXP max_iterSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< mat const >::type xty(xtySEXP);
+    Rcpp::traits::input_parameter< mat const >::type xtx(xtxSEXP);
+    Rcpp::traits::input_parameter< uvec const >::type index(indexSEXP);
+    Rcpp::traits::input_parameter< vec const >::type lambda_path(lambda_pathSEXP);
+    Rcpp::traits::input_parameter< vec >::type beta_start(beta_startSEXP);
+    Rcpp::traits::input_parameter< vec >::type u_start(u_startSEXP);
+    Rcpp::traits::input_parameter< bool const >::type varying_rho(varying_rhoSEXP);
+    Rcpp::traits::input_parameter< double >::type rho(rhoSEXP);
+    Rcpp::traits::input_parameter< double const >::type abs_tol(abs_tolSEXP);
+    Rcpp::traits::input_parameter< double const >::type rel_tol(rel_tolSEXP);
+    Rcpp::traits::input_parameter< int const >::type max_iter(max_iterSEXP);
+    rcpp_result_gen = Rcpp::wrap(admm_grplasso_path_int(xty, xtx, index, lambda_path, beta_start, u_start, varying_rho, rho, abs_tol, rel_tol, max_iter));
+    return rcpp_result_gen;
+END_RCPP
+}
 // alm_cgl_int
 List alm_cgl_int(vec const J, mat const K, mat const L, uvec const index, vec u, vec u_int, vec beta, double const lambda, double rho, double const max_rho, double gamma, bool const varying_gamma, double const eps, int const max_iter, int const max_iter_int, double const abs_tol_int, double const rel_tol_int);
 RcppExport SEXP _fcrc_alm_cgl_int(SEXP JSEXP, SEXP KSEXP, SEXP LSEXP, SEXP indexSEXP, SEXP uSEXP, SEXP u_intSEXP, SEXP betaSEXP, SEXP lambdaSEXP, SEXP rhoSEXP, SEXP max_rhoSEXP, SEXP gammaSEXP, SEXP varying_gammaSEXP, SEXP epsSEXP, SEXP max_iterSEXP, SEXP max_iter_intSEXP, SEXP abs_tol_intSEXP, SEXP rel_tol_intSEXP) {
