@@ -1,0 +1,149 @@
+starting worker pid=21395 on localhost:11185 at 11:47:21.748
+starting worker pid=21415 on localhost:11185 at 11:47:21.857
+starting worker pid=21429 on localhost:11185 at 11:47:21.967
+starting worker pid=21443 on localhost:11185 at 11:47:22.078
+starting worker pid=21457 on localhost:11185 at 11:47:22.188
+starting worker pid=21471 on localhost:11185 at 11:47:22.301
+starting worker pid=21485 on localhost:11185 at 11:47:22.411
+Loading required package: fcrc
+Loading required package: fcrc
+Loading required package: fcrc
+Loading required package: fcrc
+Loading required package: fcrc
+Loading required package: fcrc
+Loading required package: fcrc
+loaded fcrc and set parent environment
+Loading required package: splines
+Loading required package: Matrix
+Loading required package: fds
+Loading required package: rainbow
+Loading required package: MASS
+Loading required package: pcaPP
+Loading required package: RCurl
+
+Attaching package: ‘fda’
+
+The following object is masked from ‘package:graphics’:
+
+    matplot
+
+loaded fcrc and set parent environment
+loaded fcrc and set parent environment
+Loading required package: splines
+Loading required package: splines
+Loading required package: Matrix
+Loading required package: Matrix
+Loading required package: fds
+Loading required package: fds
+Loading required package: rainbow
+Loading required package: rainbow
+Loading required package: MASS
+Loading required package: MASS
+Loading required package: pcaPP
+Loading required package: pcaPP
+Loading required package: RCurl
+Loading required package: RCurl
+loaded fcrc and set parent environment
+Loading required package: splines
+Loading required package: Matrix
+
+Attaching package: ‘fda’
+
+
+Attaching package: ‘fda’
+
+The following object is masked from ‘package:graphics’:
+
+    matplot
+
+The following object is masked from ‘package:graphics’:
+
+    matplot
+
+Loading required package: fds
+Loading required package: rainbow
+Loading required package: MASS
+Loading required package: pcaPP
+loaded fcrc and set parent environment
+Loading required package: splines
+Loading required package: RCurl
+Loading required package: Matrix
+loaded fcrc and set parent environment
+Loading required package: splines
+Loading required package: fds
+Loading required package: Matrix
+Loading required package: rainbow
+Loading required package: MASS
+
+Attaching package: ‘fda’
+
+The following object is masked from ‘package:graphics’:
+
+    matplot
+
+Loading required package: fds
+Loading required package: pcaPP
+Loading required package: rainbow
+Loading required package: MASS
+loaded fcrc and set parent environment
+Loading required package: splines
+Loading required package: RCurl
+Loading required package: pcaPP
+Loading required package: Matrix
+Loading required package: fds
+Loading required package: rainbow
+Loading required package: RCurl
+Loading required package: MASS
+
+Attaching package: ‘fda’
+
+The following object is masked from ‘package:graphics’:
+
+    matplot
+
+Loading required package: pcaPP
+
+Attaching package: ‘fda’
+
+The following object is masked from ‘package:graphics’:
+
+    matplot
+
+Loading required package: RCurl
+
+Attaching package: ‘fda’
+
+The following object is masked from ‘package:graphics’:
+
+    matplot
+
+[1] "Fold 1 k 4 completed"
+[1] "Fold 2 k 4 completed"
+[1] "Fold 3 k 4 completed"
+[1] "Fold 2 k 5 completed"
+[1] "Fold 1 k 5 completed"
+[1] "Fold 3 k 5 completed"
+[1] "Fold 4 k 4 completed"
+[1] "Fold 2 k 6 completed"
+[1] "Fold 5 k 4 completed"
+[1] "Fold 1 k 6 completed"
+[1] "Fold 4 k 5 completed"
+[1] "Fold 5 k 5 completed"
+[1] "Fold 6 k 4 completed"
+[1] "Fold 3 k 6 completed"
+[1] "Fold 6 k 5 completed"
+[1] "Fold 4 k 6 completed"
+[1] "Fold 7 k 4 completed"
+[1] "Fold 5 k 6 completed"
+[1] "Fold 8 k 4 completed"
+[1] "Fold 7 k 5 completed"
+[1] "Fold 9 k 4 completed"
+[1] "Fold 6 k 6 completed"
+[1] "Fold 8 k 5 completed"
+[1] "Fold 10 k 4 completed"
+[1] "Fold 9 k 5 completed"
+[1] "Fold 7 k 6 completed"
+[1] "Fold 10 k 5 completed"
+[1] "Fold 8 k 6 completed"
+[1] "Fold 9 k 6 completed"
+[1] "Fold 10 k 6 completed"

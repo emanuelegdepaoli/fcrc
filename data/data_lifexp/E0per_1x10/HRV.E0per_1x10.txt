@@ -1,0 +1,5 @@
+Croatia, Life expectancy at birth (period, 1x10)	Last modified: 25 May 2021;  Methods Protocol: v6 (2017)
+
+  Year       Female    Male     Total
+2001-2009     78.85    71.79    75.35
+2010-2019     80.73    74.42    77.61

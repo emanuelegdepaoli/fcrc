@@ -1,0 +1,7 @@
+Greece, Life expectancy at birth (period, 1x10)	Last modified: 27 Jan 2020;  Methods Protocol: v6 (2017)
+
+  Year       Female    Male     Total
+1981-1989     78.61    73.74    76.18
+1990-1999     80.33    75.01    77.65
+2000-2009     82.20    76.60    79.37
+2010-2017     83.57    78.27    80.92

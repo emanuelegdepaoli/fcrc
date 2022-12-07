@@ -1,0 +1,7 @@
+Republic of Korea, Life expectancy at birth (period, 1x5)	Last modified: 15 Nov 2019;  Methods Protocol: v6 (2017)
+
+  Year       Female    Male     Total
+2003-2004     80.95    74.01    77.59
+2005-2009     82.53    75.85    79.33
+2010-2014     84.33    77.75    81.18
+2015-2018     85.55    79.47    82.64

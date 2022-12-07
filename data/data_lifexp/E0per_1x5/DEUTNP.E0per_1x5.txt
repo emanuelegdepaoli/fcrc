@@ -1,0 +1,9 @@
+Germany, Life expectancy at birth (period, 1x5)	Last modified: 17 Dec 2018;  Methods Protocol: v6 (2017)
+
+  Year       Female    Male     Total
+1990-1994     78.98    72.41    75.87
+1995-1999     80.21    73.86    77.18
+2000-2004     81.35    75.45    78.52
+2005-2009     82.29    76.88    79.67
+2010-2014     82.92    77.92    80.47
+2015-2017     83.18    78.36    80.79
