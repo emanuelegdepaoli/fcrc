@@ -12,7 +12,6 @@
 # 4018 Belarus; 4188 Lithuania; 4272 Russian Federation; 4055 Estonia; 4186 Latvia
 # 4303 Ukraine; 4260 Republic of Moldova
 
-setwd("/home/momo/Documents/uni/ricerca/demography/regr_lifexp_cd/")
 require(dplyr)
 require(tidyr)
 require(reshape2)
@@ -22,10 +21,10 @@ require(ggplot2)
 # causes of death
 ################################################################################
 
-deaths_who = read.csv("morticd07/ICD7_comp_new2.csv", header=TRUE)
-deaths_who = rbind(deaths_who, read.csv("morticd08/ICD8_comp_new2.csv", header=TRUE))
-deaths_who = rbind(deaths_who, read.csv("morticd9/ICD9_comp_new2.csv", header=TRUE))
-deaths_who = rbind(deaths_who, read.csv("morticd10/ICD10_comp_new2.csv", header=TRUE))
+deaths_who = read.csv("data/data_WHO/morticd07/ICD7_comp_new2.csv", header=TRUE)
+deaths_who = rbind(deaths_who, read.csv("data/data_WHO/morticd08/ICD8_comp_new2.csv", header=TRUE))
+deaths_who = rbind(deaths_who, read.csv("data/data_WHO/morticd9/ICD9_comp_new2.csv", header=TRUE))
+deaths_who = rbind(deaths_who, read.csv("data/data_WHO/morticd10/ICD10_comp_new2.csv", header=TRUE))
 
 deaths_who$Country = as.factor(deaths_who$Country)
 countries = c("CAN", "USA", "JPN", "AUT", "BLR", "BEL", "DNK", "EST", "FIN", "FRA", "GRC", "HUN",
@@ -91,7 +90,7 @@ deaths2_who$Country = droplevels(deaths2_who$Country)
 countries = levels(deaths2_who$Country)
 
 # use date of BLR, EST, LVA, LTU, RUS, UKR from HCoD database 
-deaths_hcod = read.csv("Data_HcoD/Eastern_HCoD.csv")
+deaths_hcod = read.csv("data/data_HcoD/Eastern_HCoD.csv")
 deaths_hcod = deaths_hcod[,-1]
 colnames(deaths_hcod) = c("Country", "Year", "Sex", "Age", "CauseM", "Counts", "AllCauses")
 deaths_hcod$CauseM = factor(deaths_hcod$CauseM, levels = c(1:14, 16), 
@@ -253,7 +252,7 @@ X_F = aperm(`dim<-`(t(long_deaths_F_counts[,-(1:2)]), c(ncol(long_deaths_F_count
 # life expectancy
 ################################################################################
 
-filenames = list.files("lifexp/E0per", pattern = "*.txt", full.names=TRUE)
+filenames = list.files("data/data_lifexp/lifexp/E0per", pattern = "*.txt", full.names=TRUE)
 ldf = lapply(filenames, function(x) read.table(x, skip = 1, header = T))
 data = do.call(rbind, ldf)
 countries_lifexp = sapply(filenames, function(x) gsub(".*[/]([^.]+)[.].*", "\\1", x))

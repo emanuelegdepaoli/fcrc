@@ -13,40 +13,26 @@ L = comp_L(p_vec)
 n = dim(Z_M)[3]
 t = range_years
 n_t = length(t)
-idx_EST = which(countries %in% c("EST", "HUN", "LTU", "LVA", "UKR", "POL", "UKR", "RUS"))
 Y_M_s = t(apply(Y_M, 1, scale))
 Y_F_s = t(apply(Y_F, 1, scale))
 
 # M 
 resM_cv_loo = cv_cgl(Y_M, Z_M, L, t, n, 4:7)
-resM_cv_loo_s = cv_cgl(Y_M_s, Z_M, L, t, n, 4:7)
-resM_cv_loo_noEST = cv_cgl(Y_M[,-idx_EST], Z_M[,,-idx_EST], L, t, n-length(idx_EST), 4:7)
-
 plotM_obj_loocv = plot_cv(resM_cv_loo)
-plotM_obj_loocv_s = plot_cv(resM_cv_loo_s)
-plotM_obj_loocv_noEST = plot_cv(resM_cv_loo_noEST)
 
 matM_k4 = mat_comp(Z_M, Y_M, t, 4)
-matM_k4_s = mat_comp(Z_M, Y_M_s, t, 4)
 
 resM_loo = alm_cgl_path(matM_k4, L, exp(plotM_obj_loocv$min1se$log_lambda), 
                    eps = 1e-10, abs_tol_int = 1e-8, rel_tol_int = 1e-6)
-resM_loo_s = alm_cgl_path(matM_k4_s, L, exp(plotM_obj_loocv_s$min1se$log_lambda), 
-                        eps = 1e-10, abs_tol_int = 1e-8, rel_tol_int = 1e-6)
 
 # F 
 resF_cv_loo = cv_cgl(Y_F, Z_F, L, t, n, 4:7)
-resF_cv_loo_s = cv_cgl(Y_F_s, Z_F, L, t, n, 4:7)
 plotF_obj_loocv = plot_cv(resF_cv_loo)
-plotF_obj_loocv_s = plot_cv(resF_cv_loo_s)
 
 matF_k4 = mat_comp(Z_F, Y_F, t, 4)
-matF_k4_s = mat_comp(Z_F, Y_F_s, t, 4)
 
 resF_loo = alm_cgl_path(matF_k4, L, exp(plotF_obj_loocv$min1se$log_lambda), 
                    eps = 1e-10, abs_tol_int = 1e-8, rel_tol_int = 1e-6)
-resF_loo_s = alm_cgl_path(matF_k4_s, L, exp(plotF_obj_loocv_s$min1se$log_lambda), 
-                        eps = 1e-10, abs_tol_int = 1e-8, rel_tol_int = 1e-6)
 
 # plot coefficients 
 library(ggplot2)
@@ -74,24 +60,6 @@ dfF_coef = data.frame(Year = rep(t, length(idxF)),
 df_coef = rbind(dfM_coef, dfF_coef)
 df_coef$Sex = as.factor(c(rep("M", nrow(dfM_coef)), rep("F", nrow(dfF_coef))))
 
-# labels subset of causes
-# causes2lab0_4 = c("CONG", "EXT", "INFA", "NEOP", "RESP")
-# causes2lab5_39 = c("NEOP", "END", "CIRC", "RESP", "DIG", "EXT", "MENT")
-# causes2lab40_64 = c("NEOP", "CIRC", "END", "RESP", "LUNG", "INFE")
-# causes2lab65 = c("NERV", "CIRC", "RESP", "EXT", "INFE")
-# df_coef = df_coef  %>%
-#   mutate(lab = if_else(Year == max(Year) & Composition == 3 & (Causes %in% causes2lab40_64), 
-#                        as.character(Causes), NA_character_))
-# df_coef = df_coef  %>%
-#   mutate(lab = if_else(Year == max(Year) & Composition == 4 & (Causes %in% causes2lab65), 
-#                        as.character(Causes), lab))
-# df_coef = df_coef  %>%
-#   mutate(lab = if_else(Year == max(Year) & Composition == 1 & (Causes %in% causes2lab0_4), 
-#                        as.character(Causes), lab))
-# df_coef = df_coef  %>%
-#   mutate(lab = if_else(Year == max(Year) & Composition == 2 & (Causes %in% causes2lab5_39), 
-#                        as.character(Causes), lab))
-
 # labels all causes 
 df_coef = df_coef  %>%
   mutate(lab = if_else(Year == max(Year) & Composition == 3,
@@ -115,7 +83,7 @@ mycolors = c(brewer.pal(name="Dark2", n = 8), brewer.pal(name="Paired", n = 6))
 names(mycolors) = unique(df_coef$Causes)
 
 for(i in 1:4) {
-  pdf(paste0("plot/loocv_40causes_s/coef", ageclass[i], ".pdf"), height=6, width=10)
+  pdf(paste0("plot_40causes/coef", ageclass[i], ".pdf"), height=6, width=10)
   obj = ggplot(df_coef %>% subset(Composition == comp_names[i]), aes(x = Year, y = Coefficient, colour = Causes)) +
     geom_line() + 
     geom_hline(yintercept = 0, lty = 2) + ggtitle(comp_names[i]) + 
@@ -132,7 +100,7 @@ for(i in 1:4) {
 # single plots by sex and causes
 for(i in 1:4) {
   for(sex in c("M", "F")){
-    pdf(paste0("plot/loocv_40causes_s/coef", ageclass[i],sex, ".pdf"), height=6, width=6)
+    pdf(paste0("plot_40causes/coef", ageclass[i],sex, ".pdf"), height=6, width=6)
     obj = ggplot(df_coef %>% subset(Composition ==  comp_names[i] & Sex == sex), 
                  aes(x = Year, y = Coefficient, colour = Causes)) +
       geom_line() + 
@@ -148,7 +116,7 @@ for(i in 1:4) {
 }
 
 for(sex in c("M", "F")){
-  pdf(paste0("plot/loocv_40causes_s/coef", sex, ".pdf"), height=6, width=6)
+  pdf(paste0("plot_40causes/coef", sex, ".pdf"), height=6, width=6)
   obj = ggplot(df_coef %>% subset(Sex == sex), 
                aes(x = Year, y = Coefficient, colour = Causes)) +
     geom_line() + facet_wrap(~ Composition, scales = "free") +
@@ -196,19 +164,12 @@ data_toplotF = data.frame(cum_energy = as.vector(contrF_norm),
 
 data_toplot = rbind(data_toplotM, data_toplotF)
 data_toplot$Sex = rep(c("M", "F"), each = nrow(data_toplotM))
-pdf("plot/loocv_40causes_s/rel_energy.pdf", height = 6, width = 10)
+pdf("plot_40causes/rel_energy.pdf", height = 6, width = 10)
 ggplot() + geom_bar(aes(y = cum_energy, x = Year, fill = Class, group = Sex), data = data_toplot,
                     stat="identity") + ylab("Relative magnitude") + facet_wrap(~Sex) +
   scale_fill_discrete(name = "Age classes") + scale_y_continuous(n.breaks = 10) +theme_bw()
 dev.off()
 
-# beamer 
-pdf("plot/loocv_40causes/rel_energy_beamer.pdf", height = 4.5, width = 8)
-ggplot() + geom_bar(aes(y = cum_energy, x = Year, fill = Class, group = Sex), data = data_toplot,
-                    stat="identity", width = 1) + ylab("Relative magnitude") + facet_wrap(~Sex) +
-  scale_fill_discrete(name = "Age classes") + scale_y_continuous(n.breaks = 10) +  theme(legend.position="bottom")
-dev.off()
-
 # save results
-save(list=c("resM_cv_loo", "resF_cv_loo", "resM_cv_loo_noEST", "resM_cv_loo_s", "resF_cv_loo_s"), 
+save(list=c("resM_cv_loo", "resF_cv_loo"), 
      file = "analysis_25countries_40causes.RData")

@@ -1,4 +1,4 @@
-load("~/Documents/uni/ricerca/demography/regr_lifexp_cd/data_fullCOD.RData")
+load("data_fullCOD.RData")
 library(fcrc)
 library(ggplot2)
 causes
@@ -58,7 +58,7 @@ saveRDS(resF, "bootF_loocv_40causes.rds")
 # analysis
 resM_boot = readRDS("bootM_loocv_40causes_500rep.rds")
 resF_boot = readRDS("bootF_loocv_40causes_500rep.rds")
-load("/home/momo/Documents/uni/ricerca/demography/regr_lifexp_cd/analysis_25countries_40causes.RData")
+load("analysis_25countries_40causes.RData")
 # reproducing idx bootstrap
 set.seed(211)
 idx_M = array(1, dim = c(nrep, n))
@@ -78,7 +78,7 @@ resM = alm_cgl_path(matM_k4, L, exp(cvM_obj$min1se$log_lambda), eps = 1e-10, abs
 dfM = data.frame(group = rep(factor(!(1:p)%in%which(resM$index_null == 1), labels = c("not selected", "selected")), each = nrep),
                  Category = factor(rep(causes, each = nrep)))
 dfM = dfM[as.vector(resM_boot) != 0,]
-pdf("~/Documents/uni/ricerca/demography/regr_lifexp_cd/plot/loocv_40causes/bootM_500rep.pdf")
+pdf("plot/bootM_500rep.pdf")
 ggplot(data = dfM) + geom_bar(aes(x = ..count../nrep, y = Category, fill = group), show.legend = F) +
   labs(y = "Causes", x = "Proportion of selection") + scale_x_continuous(breaks = c(0.6, 0.7, 0.8, 0.9)) +
   scale_fill_manual("legend", values = c("not selected" = "black", "selected" = "grey")) + theme_bw() + 
@@ -92,7 +92,7 @@ resF = alm_cgl_path(matF_k4, L, exp(cvF_obj$min1se$log_lambda), eps = 1e-10, abs
 dfF = data.frame(group = rep(factor(!(1:p)%in%which(resF$index_null==1), labels = c("not selected", "selected")), each = nrep),
                  Category = factor(rep(causes, each = nrep)))
 dfF = dfF[as.vector(resF_boot) != 0,]
-pdf("~/Documents/uni/ricerca/demography/regr_lifexp_cd/plot/loocv_40causes/bootF_500rep.pdf")
+pdf("plot/bootF_500rep.pdf")
 ggplot(data = dfF) + geom_bar(aes(x = ..count../nrep, y = Category, fill = group), show.legend = F) +
   labs(y = "Causes", x = "Proportion of selection") + scale_x_continuous(breaks = c(0.6, 0.7, 0.8, 0.9)) +
   scale_fill_manual("legend", values = c("not selected" = "black", "selected" = "grey")) + theme_bw() + 
@@ -102,7 +102,7 @@ dev.off()
 # M & F
 df = rbind(dfM, dfF)
 df$Sex = factor(c(rep("M", nrow(dfM)), rep("F", nrow(dfF))))
-pdf("~/Documents/uni/ricerca/demography/regr_lifexp_cd/plot/loocv_40causes/boot_500rep.pdf")
+pdf("plot/boot_500rep.pdf")
 ggplot(data = df) + geom_bar(aes(x = ..count../nrep, y = Category, fill = group), show.legend = F) +
   facet_wrap(~Sex, ) + labs(y = "Causes", x = "Proportion of selection") + scale_x_continuous(breaks = c(0.6, 0.7, 0.8, 0.9)) +
   scale_fill_manual("legend", values = c("not selected" = "black", "selected" = "grey")) + theme_bw() + 
