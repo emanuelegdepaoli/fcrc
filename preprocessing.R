@@ -21,10 +21,10 @@ require(ggplot2)
 # causes of death
 ################################################################################
 
-deaths_who = read.csv("data/data_WHO/morticd07/ICD7_comp_new2.csv", header=TRUE)
-deaths_who = rbind(deaths_who, read.csv("data/data_WHO/morticd08/ICD8_comp_new2.csv", header=TRUE))
-deaths_who = rbind(deaths_who, read.csv("data/data_WHO/morticd9/ICD9_comp_new2.csv", header=TRUE))
-deaths_who = rbind(deaths_who, read.csv("data/data_WHO/morticd10/ICD10_comp_new2.csv", header=TRUE))
+deaths_who = read.csv("data/data_WHO/morticd07/ICD7_comp.csv", header=TRUE)
+deaths_who = rbind(deaths_who, read.csv("data/data_WHO/morticd08/ICD8_comp.csv", header=TRUE))
+deaths_who = rbind(deaths_who, read.csv("data/data_WHO/morticd9/ICD9_comp.csv", header=TRUE))
+deaths_who = rbind(deaths_who, read.csv("data/data_WHO/morticd10/ICD10_comp.csv", header=TRUE))
 
 deaths_who$Country = as.factor(deaths_who$Country)
 countries = c("CAN", "USA", "JPN", "AUT", "BLR", "BEL", "DNK", "EST", "FIN", "FRA", "GRC", "HUN",
