@@ -13,8 +13,6 @@ L = comp_L(p_vec)
 n = dim(Z_M)[3]
 t = range_years
 n_t = length(t)
-Y_M_s = t(apply(Y_M, 1, scale))
-Y_F_s = t(apply(Y_F, 1, scale))
 
 # M 
 resM_cv_loo = cv_cgl(Y_M, Z_M, L, t, n, 4:7)
@@ -43,10 +41,10 @@ comp_names =  c("Age class 0-4", "Age class 5-39", "Age class 40-64", "Age class
 idxM = (1:matM_k4$p)[-which(resM_loo$index_null==1)]
 idxF = (1:matF_k4$p)[-which(resF_loo$index_null==1)]
 idx_comp = unlist(sapply(1:length(p_vec), function(x) rep(x, each = p_vec[x])))
-B_estM = matrix(resM_loo_s$beta, ncol = matM_k4$k, byrow = T)
-Bc_estM = matrix(resM_loo_s$betac, ncol = matM_k4$k, byrow = T)
-B_estF = matrix(resF_loo_s$beta, ncol = matF_k4$k, byrow = T)
-Bc_estF = matrix(resF_loo_s$betac, ncol = matF_k4$k, byrow = T)
+B_estM = matrix(resM_loo$beta, ncol = matM_k4$k, byrow = T)
+Bc_estM = matrix(resM_loo$betac, ncol = matM_k4$k, byrow = T)
+B_estF = matrix(resF_loo$beta, ncol = matF_k4$k, byrow = T)
+Bc_estF = matrix(resF_loo$betac, ncol = matF_k4$k, byrow = T)
 curvesM = matM_k4$Phi%*%t(B_estM[idxM,])
 curvesF = matF_k4$Phi%*%t(B_estF[idxF,])
 dfM_coef = data.frame(Year = rep(t, length(idxM)), 
@@ -83,7 +81,7 @@ mycolors = c(brewer.pal(name="Dark2", n = 8), brewer.pal(name="Paired", n = 6))
 names(mycolors) = unique(df_coef$Causes)
 
 for(i in 1:4) {
-  pdf(paste0("plot_40causes/coef", ageclass[i], ".pdf"), height=6, width=10)
+  pdf(paste0("plot/coef", ageclass[i], ".pdf"), height=6, width=10)
   obj = ggplot(df_coef %>% subset(Composition == comp_names[i]), aes(x = Year, y = Coefficient, colour = Causes)) +
     geom_line() + 
     geom_hline(yintercept = 0, lty = 2) + ggtitle(comp_names[i]) + 
@@ -100,7 +98,7 @@ for(i in 1:4) {
 # single plots by sex and causes
 for(i in 1:4) {
   for(sex in c("M", "F")){
-    pdf(paste0("plot_40causes/coef", ageclass[i],sex, ".pdf"), height=6, width=6)
+    pdf(paste0("plot/coef", ageclass[i],sex, ".pdf"), height=6, width=6)
     obj = ggplot(df_coef %>% subset(Composition ==  comp_names[i] & Sex == sex), 
                  aes(x = Year, y = Coefficient, colour = Causes)) +
       geom_line() + 
@@ -116,7 +114,7 @@ for(i in 1:4) {
 }
 
 for(sex in c("M", "F")){
-  pdf(paste0("plot_40causes/coef", sex, ".pdf"), height=6, width=6)
+  pdf(paste0("plot/coef", sex, ".pdf"), height=6, width=6)
   obj = ggplot(df_coef %>% subset(Sex == sex), 
                aes(x = Year, y = Coefficient, colour = Causes)) +
     geom_line() + facet_wrap(~ Composition, scales = "free") +
@@ -131,8 +129,8 @@ for(sex in c("M", "F")){
 }
 
 # fitted curves
-plot_Y(resM_loo_s, matM_k4_s, countries, Y_M_s, Z_M, t, sep = F, devnew = T)
-plot_Y(resF_loo_s, matM_k4_s, countries, Y_F, Z_F, t, sep = F, devnew = T)
+plot_Y(resM_loo, matM_k4, countries, Y_M, Z_M, t, sep = F, devnew = T)
+plot_Y(resF_loo, matM_k4, countries, Y_F, Z_F, t, sep = F, devnew = T)
 
 # in-sample error 
 error_comp(resM_loo$beta, resM_loo$beta0, Y_M, Z_M, matM_k4$Phi, t)
@@ -140,6 +138,7 @@ error_comp(resF_loo$beta, resF_loo$beta0, Y_F, Z_F, matF_k4$Phi, t)
 
 # importance plots
 library(fda)
+library(RColorBrewer)
 estM_fdobj = fd(coef = t(B_estM), 
                 basisobj = create.bspline.basis(rangeval = c(min(t), max(t)), nbasis = 4))
 energy_matM = matrix(0, ncol = p, nrow = n_t)
@@ -164,10 +163,11 @@ data_toplotF = data.frame(cum_energy = as.vector(contrF_norm),
 
 data_toplot = rbind(data_toplotM, data_toplotF)
 data_toplot$Sex = rep(c("M", "F"), each = nrow(data_toplotM))
-pdf("plot_40causes/rel_energy.pdf", height = 6, width = 10)
+pdf("plot/rel_energy.pdf", height = 6, width = 10)
 ggplot() + geom_bar(aes(y = cum_energy, x = Year, fill = Class, group = Sex), data = data_toplot,
-                    stat="identity") + ylab("Relative magnitude") + facet_wrap(~Sex) +
-  scale_fill_discrete(name = "Age classes") + scale_y_continuous(n.breaks = 10) +theme_bw()
+                    stat="identity",  width = 1) + ylab("Relative magnitude") + facet_wrap(~Sex) +
+  scale_fill_discrete(name = "Age classes") + scale_y_continuous(n.breaks = 10) +theme_bw()  +
+  scale_fill_brewer(palette = "Accent")
 dev.off()
 
 # save results
