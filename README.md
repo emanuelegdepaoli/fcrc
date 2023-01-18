@@ -13,6 +13,6 @@ Multivariate functional data that are cross-sectionally compositional data are a
 - the file `preprocessing.R` contains the code to preprocess the data.
 - the file `analysis_25countries_40causes.R` contains the code to reproduce the analysis and the plots. 
 - the folders `bootstrap` and `simulations` contain the code to reproduce the results of the simulations.
-- the folder `plot` contain the plots showed in the paper
+- the folder `plot` contains the plots showed in the paper.
 
 
