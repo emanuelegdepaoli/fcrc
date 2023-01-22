@@ -3,9 +3,9 @@
 using namespace Rcpp; using namespace arma;
 
 // Soft thresholding operator
-vec soft_thre_int(vec const x, double const par){
+arma::vec soft_thre_int(arma::vec const x, double const par){
    double const x_norm = norm(x, 2);
-   vec out = zeros(x.n_rows);
+   arma::vec out = zeros(x.n_rows);
    if((1-par/x_norm) > 0){
       out = x*(1-par/x_norm);
    }
@@ -24,8 +24,8 @@ vec soft_thre_int(vec const x, double const par){
 // s.t theta_j = beta_j
 
 // [[Rcpp::export]]
-List admm_grplasso_path_int(mat const xty, mat const xtx, uvec const index,
-                            vec const lambda_path, vec beta_start, vec u_start, 
+List admm_grplasso_path_int(arma::mat const xty, arma::mat const xtx, arma::uvec const index,
+                            arma::vec const lambda_path, arma::vec beta_start, arma::vec u_start, 
                             bool const varying_rho = true, double rho = 1, 
                             double const abs_tol = 1e-4, double const rel_tol = 1e-2,
                             int const max_iter = 1000L){
@@ -34,30 +34,30 @@ List admm_grplasso_path_int(mat const xty, mat const xtx, uvec const index,
   // inizialization results path
   int const n_lambdas = lambda_path.n_elem;
   int const n_coef = beta_start.n_elem;
-  mat res_beta(n_coef, n_lambdas);
+  arma::mat res_beta(n_coef, n_lambdas);
   vec res_niter = zeros(n_lambdas);
   
   for(uword i = 0; i < n_lambdas; ++i){
   
     double const lambda = lambda_path(i);
     uword const p = xtx.n_cols;
-    uvec const grps = unique(index);
+    arma::uvec const grps = unique(index);
     uword const n_groups = grps.n_rows;
-    vec beta = beta_start;
-    vec theta = beta_start;
-    vec u = u_start;
-    mat xtx_V;
-    vec xtx_D;
+    arma::vec beta = beta_start;
+    arma::vec theta = beta_start;
+    arma::vec u = u_start;
+    arma::mat xtx_V;
+    arma::vec xtx_D;
     eig_sym(xtx_D, xtx_V, xtx);
-    mat xtxr_inv = xtx_V*diagmat(pow(xtx_D+rho, -1.0))*xtx_V.t();
-    vec objval = zeros(max_iter);
-    vec r_norm = zeros(max_iter);
-    vec s_norm = zeros(max_iter);
-    vec rho_list = zeros(max_iter);
-    vec eps_pri = zeros(max_iter);
-    vec eps_dual = zeros(max_iter);
+    arma::mat xtxr_inv = xtx_V*diagmat(pow(xtx_D+rho, -1.0))*xtx_V.t();
+    arma::vec objval = zeros(max_iter);
+    arma::vec r_norm = zeros(max_iter);
+    arma::vec s_norm = zeros(max_iter);
+    arma::vec rho_list = zeros(max_iter);
+    arma::vec eps_pri = zeros(max_iter);
+    arma::vec eps_dual = zeros(max_iter);
     double rho_old = rho;
-    vec beta_old = beta;
+    arma::vec beta_old = beta;
     
     // iterations start
     uword iter = 1;
@@ -74,7 +74,7 @@ List admm_grplasso_path_int(mat const xty, mat const xtx, uvec const index,
       
       // beta update
       for(uword j = 0; j < n_groups; ++j){
-        uvec const idx = find(index == grps(j));
+        arma::uvec const idx = find(index == grps(j));
         beta.elem(idx) = soft_thre_int(theta.elem(idx)+u.elem(idx), lambda/rho);
       }
       
@@ -132,8 +132,8 @@ List admm_grplasso_path_int(mat const xty, mat const xtx, uvec const index,
 // else it varies only at the first internal ADMM iteration
 
 // [[Rcpp::export]]
-List alm_cgl_path_int(vec const J, mat const K, mat const L, uvec const index, 
-                      vec u, vec u_int, vec beta, vec const lambda_path, double rho, 
+List alm_cgl_path_int(arma::vec const J, arma::mat const K, arma::mat const L, arma::uvec const index, 
+                      arma::vec u, arma::vec u_int, arma::vec beta, arma::vec const lambda_path, double rho, 
                       double const max_rho, double gamma, bool const varying_gamma = true, 
                       double const eps = 1e-5, int const max_iter = 100L, int const max_iter_int = 1000L, 
                       double const abs_tol_int = 1e-6, double const rel_tol_int = 1e-4) {
@@ -141,25 +141,25 @@ List alm_cgl_path_int(vec const J, mat const K, mat const L, uvec const index,
   // inizialization results path
   int const n_lambdas = lambda_path.n_elem;
   int const n_coef = beta.n_elem;
-  mat res_beta(n_coef, n_lambdas);
-  vec res_niter = zeros(n_lambdas);
+  arma::mat res_beta(n_coef, n_lambdas);
+  arma::vec res_niter = zeros(n_lambdas);
   
   for(uword i = 0; i < n_lambdas; ++i){
     
     double const lambda = lambda_path(i);
-    vec err = zeros(max_iter);
+    arma::vec err = zeros(max_iter);
     double rho_old = rho;
     
-    mat xtxr = K + rho*L.t()*L;
+    arma::mat xtxr = K + rho*L.t()*L;
     uword const p = xtxr.n_cols;
-    uvec const grps = unique(index);
+    arma::uvec const grps = unique(index);
     uword const n_groups = grps.n_rows;
-    vec xty = zeros(size(J));
+    arma::vec xty = zeros(size(J));
   
     // iterations start
     uword iter = 1;
     while (iter <= max_iter) {
-      vec beta_old = beta;
+      arma::vec beta_old = beta;
       if (rho_old != rho) {
         xtxr = K + rho*L.t()*L;
       } else {
@@ -167,18 +167,18 @@ List alm_cgl_path_int(vec const J, mat const K, mat const L, uvec const index,
       }
       
       // beta update
-      vec theta = beta;
-      vec beta_int = beta;
-      mat xtxr_V;
-      vec xtxr_D;
+      arma::vec theta = beta;
+      arma::vec beta_int = beta;
+      arma::mat xtxr_V;
+      arma::vec xtxr_D;
       eig_sym(xtxr_D, xtxr_V, xtxr);
-      mat xtxr_inv = xtxr_V*diagmat(pow(xtxr_D+gamma, -1.0))*xtxr_V.t();
-      vec r_norm = zeros(max_iter_int);
-      vec s_norm = zeros(max_iter_int);
-      vec eps_pri = zeros(max_iter_int);
-      vec eps_dual = zeros(max_iter_int);
+      arma::mat xtxr_inv = xtxr_V*diagmat(pow(xtxr_D+gamma, -1.0))*xtxr_V.t();
+      arma::vec r_norm = zeros(max_iter_int);
+      arma::vec s_norm = zeros(max_iter_int);
+      arma::vec eps_pri = zeros(max_iter_int);
+      arma::vec eps_dual = zeros(max_iter_int);
       double gamma_old = gamma;
-      vec beta_old_int = beta_int;
+      arma::vec beta_old_int = beta_int;
       
       // internal iterations start
       uword iter_int = 1;
@@ -194,7 +194,7 @@ List alm_cgl_path_int(vec const J, mat const K, mat const L, uvec const index,
         
         // beta update
         for(uword j = 0; j < n_groups; ++j){
-          uvec const idx = find(index == grps(j));
+          arma::uvec const idx = find(index == grps(j));
           beta_int.elem(idx) = soft_thre_int(theta.elem(idx)+u_int.elem(idx), lambda/gamma);
         }
         
