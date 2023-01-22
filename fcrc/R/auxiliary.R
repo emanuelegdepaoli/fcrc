@@ -1,33 +1,3 @@
-################################################################################
-# auxiliary functions
-# last edit: 04/05/2022
-# NULL instead of missing for optional arguments 
-# added functions to plot coef by composition 
-# fixed min1se CV 
-################################################################################
-
-# integral approximation: trapezoidal method
-trapz = function(x, y){
-  l = length(x)
-  xs = x[-1]-x[-l]
-  ys = 0.5*(y[-l]+y[-1])
-  return(sum(xs*ys))
-}
-
-# constraint matrix
-comp_L = function(p_vec){
-  p = sum(p_vec)
-  n_constr = length(p_vec)
-  L = array(0, dim = c(n_constr, p))
-  count = 1
-  for(j in 1:n_constr){
-    L[j, count:(count+p_vec[j]-1)] = 1
-    count = count + p_vec[j]
-  }
-  return(L)
-}
-
-# matrices for computations
 mat_comp = function(Z, Y, t, k, Zc = NULL){
   beta_basis = create.bspline.basis(rangeval = c(min(t), max(t)), nbasis = k, 
                                     norder = 4) # cubic-splines 
@@ -123,6 +93,19 @@ mat_comp = function(Z, Y, t, k, Zc = NULL){
   
   return(list(J = J, K = K, M = M, R = R, S = S, P = P, Q = Q, 
               p = p, pc = pc, n = n, k = k, Phi = Phi, beta_basis = beta_basis))
+}
+
+# constraint matrix
+comp_L = function(p_vec){
+  p = sum(p_vec)
+  n_constr = length(p_vec)
+  L = array(0, dim = c(n_constr, p))
+  count = 1
+  for(j in 1:n_constr){
+    L[j, count:(count+p_vec[j]-1)] = 1
+    count = count + p_vec[j]
+  }
+  return(L)
 }
 
 # MSE and prediction error
