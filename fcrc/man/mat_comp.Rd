@@ -17,8 +17,9 @@ response at \eqn{n_t} points.}
 
 \item{k}{The number of basis function.}
 
-\item{Zc}{An optional array of \eqn{p_c} control variables, with same structure of Z. The
-first predictor must be a vector of ones.}
+\item{Zc}{optional. An array of \eqn{p_c} control variables, with same structure of Z. The
+first predictor must be a vector of ones. The default value is an array of ones,
+to estimate the intercept.}
 }
 \value{
 A list containing the matrices \eqn{J}, \eqn{K}, \eqn{M}, \eqn{P} and 

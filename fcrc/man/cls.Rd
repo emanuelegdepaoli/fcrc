@@ -2,25 +2,30 @@
 % Please edit documentation in R/cls.R
 \name{cls}
 \alias{cls}
-\title{Compute linear regression with constraints}
+\title{Fitting linear regression models with linear constraints}
 \usage{
 cls(y, Z, L, c, intercept = T)
 }
 \arguments{
-\item{y}{tba}
+\item{y}{A \eqn{n}-dimensional response vector.}
 
-\item{Z}{tba}
+\item{Z}{A \eqn{n*p} matrix of predictors.}
 
-\item{L}{tba}
+\item{L}{A \eqn{q*p} matrix.}
 
-\item{c}{tba}
+\item{c}{A \eqn{q}-dimensional vector.}
 
-\item{intercept}{tba}
+\item{intercept}{logical. Should an intercept be included in the model? 
+default is TRUE.}
 }
 \value{
-A list
+A list containing \eqn{beta}, the intercept \eqn{beta_0} and \eqn{u}.
 }
 \description{
-Compute the least square solution from linear regression with constraint 
-\eqn{L*beta=c}.
+Compute the least square solution for estimating a linear regression model
+\eqn{y=Z*beta} under the constraint \eqn{L*beta=c}.
+}
+\details{
+The associated Lagrangian is \eqn{L(beta, u) = -t(y)*Z*beta + 0.5*t(beta)*t(Z)*Z*beta 
++ t(u)*(L*beta-c)}.
 }

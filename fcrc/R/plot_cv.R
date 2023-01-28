@@ -1,9 +1,7 @@
-#' Cross-validation plot
+#' Plot the results of the n-fold cross-validation
 #' 
-#' tba
 #'
-#' @param results tba
-#' @return tba
+#' @param results A list from \url{cv_cgl}.
 #' @import ggplot2
 #' @export
 plot_cv = function(results){

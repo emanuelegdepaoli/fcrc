@@ -1,8 +1,8 @@
 #' Compute regularization path 
 #' 
-#' Compute the regularization path for constrained group Lasso.
+#' Compute the regularization path to be used by \link{alm_cgl_path}.
 #'
-#' @param matrices tba.
+#' @param matrices A list from \link{mat_comp}.
 #' @return A vector with the regularization path. 
 #' @export
 # Regularization path

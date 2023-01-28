@@ -7,19 +7,23 @@
 error_comp(beta, betac, Y, Z, Phi, t, Zc = NULL)
 }
 \arguments{
-\item{beta}{to be added}
+\item{beta}{The estimated \eqn{beta} (for a single \eqn{lambda})}
 
-\item{betac}{to be added}
+\item{betac}{The estimated \eqn{betac} (for a single \eqn{lambda}).}
 
-\item{Y}{to be added}
+\item{Y}{A \eqn{n_t*n} array, containing \eqn{n} samples of the functional 
+response at \eqn{n_t} points.}
 
-\item{Z}{to be added}
+\item{Z}{A \eqn{n_t*p*n} array, containing \eqn{n} samples of \eqn{p} functional
+predictors observed at \eqn{n_t} points.}
 
-\item{Phi}{to de added}
+\item{Phi}{The matrix \eqn{Phi} from \eqn{mat_comp}.}
 
-\item{t}{to be added}
+\item{t}{A vector containing the values at which functions are observed.}
 
-\item{Zc}{to be added}
+\item{Zc}{optional. An array of \eqn{p_c} control variables, with same structure of Z. The
+first predictor must be a vector of ones. The default value is an array of ones,
+to estimate the intercept.}
 }
 \value{
 A list containing the MSE and the APMSE.

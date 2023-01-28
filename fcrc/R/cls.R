@@ -1,14 +1,18 @@
-#' Compute linear regression with constraints 
+#' Fitting linear regression models with linear constraints 
 #' 
-#' Compute the least square solution from linear regression with constraint 
-#' \eqn{L*beta=c}.
+#' Compute the least square solution for estimating a linear regression model
+#' \eqn{y=Z*beta} under the constraint \eqn{L*beta=c}.
+#' 
+#' The associated Lagrangian is \eqn{L(beta, u) = -t(y)*Z*beta + 0.5*t(beta)*t(Z)*Z*beta 
+#' + t(u)*(L*beta-c)}.
 #'
-#' @param y tba
-#' @param Z tba
-#' @param L tba
-#' @param c tba
-#' @param intercept tba 
-#' @return A list 
+#' @param y A \eqn{n}-dimensional response vector.
+#' @param Z A \eqn{n*p} matrix of predictors. 
+#' @param L A \eqn{q*p} matrix.
+#' @param c A \eqn{q}-dimensional vector.
+#' @param intercept logical. Should an intercept be included in the model? 
+#'                  default is TRUE.
+#' @return A list containing \eqn{beta}, the intercept \eqn{beta_0} and \eqn{u}.
 #' @export
 cls = function(y, Z, L, c, intercept = T){
   n = nrow(Z)

@@ -9,8 +9,9 @@
 #'          response at \eqn{n_t} points. 
 #' @param t A vector containing the values at which functions are observed.
 #' @param k The number of basis function.
-#' @param Zc An optional array of \eqn{p_c} control variables, with same structure of Z. The
-#'           first predictor must be a vector of ones. 
+#' @param Zc optional. An array of \eqn{p_c} control variables, with same structure of Z. The
+#'           first predictor must be a vector of ones. The default value is an array of ones,
+#'           to estimate the intercept. 
 #' @return A list containing the matrices \eqn{J}, \eqn{K}, \eqn{M}, \eqn{P} and 
 #'         other quantities used for model estimation. 
 #' @importFrom fda create.bspline.basis eval.basis 

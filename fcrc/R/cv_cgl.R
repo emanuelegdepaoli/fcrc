@@ -1,9 +1,26 @@
-#' Compute n-fold cross validation 
+#' n-fold cross validation for a sparse concurrent functional regression model with compositional covariates
 #' 
-#' Compute the regularization path for constrained group Lasso.
-#'
-#' tba
+#' Perform n-fold cross validation for the model estimated by \link{alm_cgl_path} to
+#' select the number of basis functions and \eqn{lambda}. 
 #' 
+#' @param Y A \eqn{n_t*p*n} array, containing \eqn{n} samples of \eqn{p} functional
+#'          predictors observed at \eqn{n_t} points. 
+#' @param Z A \eqn{n_t*n} array, containing \eqn{n} samples of the functional 
+#'          response at \eqn{n_t} points. 
+#' @param Zc optional. An array of \eqn{p_c} control variables, with same structure of Z. The
+#'           first predictor must be a vector of ones. The default value is an array of ones,
+#'           to estimate the intercept. 
+#' @param L A matrix from \link{comp_L}.
+#' @param t A vector containing the values at which functions are observed.
+#' @param nfold optional. Number of folds. 
+#' @param k_range optional. Number of basis functions.
+#' @param ncores optional. Number of cores to be used. 
+#' @param eps optional. Tolerance for ALM.
+#' @param max_iter optional. Maximum number of iterations for ALM. 
+#' @param max_iter_int optional. Maximum number of iterations for ADMM. 
+#' @param abs_tol_int optional. Tolerance for primal feasibility condition of ADMM. 
+#' @param rel_tol_int optional. Tolerance for dual feasibility condition of ADMM.
+#' @param zero_tol optional. Tolerance for setting a coefficient to zero. 
 #' @import parallel
 #' @import foreach 
 #' @importFrom doParallel registerDoParallel

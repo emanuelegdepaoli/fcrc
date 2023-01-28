@@ -2,7 +2,7 @@
 % Please edit documentation in R/cv_cgl.R
 \name{cv_cgl}
 \alias{cv_cgl}
-\title{Compute n-fold cross validation}
+\title{n-fold cross validation for a sparse concurrent functional regression model with compositional covariates}
 \usage{
 cv_cgl(
   Y,
@@ -21,9 +21,40 @@ cv_cgl(
   zero_tol = 1e-04
 )
 }
-\description{
-Compute the regularization path for constrained group Lasso.
+\arguments{
+\item{Y}{A \eqn{n_t*p*n} array, containing \eqn{n} samples of \eqn{p} functional
+predictors observed at \eqn{n_t} points.}
+
+\item{Z}{A \eqn{n_t*n} array, containing \eqn{n} samples of the functional 
+response at \eqn{n_t} points.}
+
+\item{L}{A matrix from \link{comp_L}.}
+
+\item{t}{A vector containing the values at which functions are observed.}
+
+\item{nfold}{optional. Number of folds.}
+
+\item{k_range}{optional. Number of basis functions.}
+
+\item{Zc}{optional. An array of \eqn{p_c} control variables, with same structure of Z. The
+first predictor must be a vector of ones. The default value is an array of ones,
+to estimate the intercept.}
+
+\item{ncores}{optional. Number of cores to be used.}
+
+\item{eps}{optional. Tolerance for ALM.}
+
+\item{max_iter_int}{optional. Maximum number of iterations for ADMM.}
+
+\item{max_iter}{optional. Maximum number of iterations for ALM.}
+
+\item{abs_tol_int}{optional. Tolerance for primal feasibility condition of ADMM.}
+
+\item{rel_tol_int}{optional. Tolerance for dual feasibility condition of ADMM.}
+
+\item{zero_tol}{optional. Tolerance for setting a coefficient to zero.}
 }
-\details{
-tba
+\description{
+Perform n-fold cross validation for the model estimated by \link{alm_cgl_path} to
+select the number of basis functions and \eqn{lambda}.
 }

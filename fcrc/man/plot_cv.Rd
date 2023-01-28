@@ -2,16 +2,13 @@
 % Please edit documentation in R/plot_cv.R
 \name{plot_cv}
 \alias{plot_cv}
-\title{Cross-validation plot}
+\title{Plot the results of the n-fold cross-validation}
 \usage{
 plot_cv(results)
 }
 \arguments{
-\item{results}{tba}
-}
-\value{
-tba
+\item{results}{A list from \url{cv_cgl}.}
 }
 \description{
-tba
+Plot the results of the n-fold cross-validation
 }

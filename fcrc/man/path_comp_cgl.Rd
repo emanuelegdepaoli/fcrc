@@ -7,11 +7,11 @@
 path_comp_cgl(matrices)
 }
 \arguments{
-\item{matrices}{tba.}
+\item{matrices}{A list from \link{mat_comp}.}
 }
 \value{
 A vector with the regularization path.
 }
 \description{
-Compute the regularization path for constrained group Lasso.
+Compute the regularization path to be used by \link{alm_cgl_path}.
 }

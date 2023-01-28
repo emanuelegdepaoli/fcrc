@@ -2,13 +2,17 @@
 #' 
 #' Compute the mean square error (MSE) and the average prediction MSE (APMSE). 
 #'
-#' @param beta to be added
-#' @param betac to be added
-#' @param Y to be added
-#' @param Z to be added
-#' @param Phi to de added 
-#' @param t to be added
-#' @param Zc to be added
+#' @param beta The estimated \eqn{beta} (for a single \eqn{lambda})
+#' @param betac The estimated \eqn{betac} (for a single \eqn{lambda}).
+#' @param Z A \eqn{n_t*p*n} array, containing \eqn{n} samples of \eqn{p} functional
+#'          predictors observed at \eqn{n_t} points. 
+#' @param Y A \eqn{n_t*n} array, containing \eqn{n} samples of the functional 
+#'          response at \eqn{n_t} points. 
+#' @param Phi The matrix \eqn{Phi} from \eqn{mat_comp}. 
+#' @param t A vector containing the values at which functions are observed.
+#' @param Zc optional. An array of \eqn{p_c} control variables, with same structure of Z. The
+#'           first predictor must be a vector of ones. The default value is an array of ones,
+#'           to estimate the intercept.
 #' @return A list containing the MSE and the APMSE. 
 #' @export
 error_comp = function(beta, betac, Y, Z, Phi, t, Zc = NULL){

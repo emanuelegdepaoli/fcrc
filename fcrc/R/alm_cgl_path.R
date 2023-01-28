@@ -1,9 +1,49 @@
-#' Compute constrained group Lasso 
+#' Fit a sparse concurrent functional regression model with compositional covariates
 #' 
-#' tba
+#' Compute the estimates of the model 
+#' \deqn{y(t) = Z_c(t)*beta_c(t) + Z(t)*beta(t) + e(t)}
+#' subject to 
+#' \deqn{L*beta(t) = 0}
+#' with a Group Lasso penalty, as described in the paper, for a path of \eqn{lambdas}.
 #' 
-#' tba 
-#'
+#' The model is estimated using the augmented Lagrangian method (ALM), with associated 
+#' Lagrangian
+#' \deqn{L_ρ(beta, u) = -t(beta)*J + 0.5*t(beta)*K*beta + lambda*sum(||theta_j||_2) 
+#'  + t(u)*L*beta + rho/2*(||L*beta||_2)^2},
+#' as described in the paper.
+#'  
+#' The Alternating Direction Method of Multipliers (ADMM) is used to solve the first 
+#' step of ALM, which is a standard Group Lasso problem. The implementation follows Boyd et al. (2010) 
+#' \url{https://web.stanford.edu/~boyd/papers/pdf/admm_distr_stats.pdf}. The penalty 
+#' parameter of ADMM can vary for a maximum of 50 iterations maximum and then at 
+#' least 50 more iterations are done.
+#' @param matrices A list from \link{mat_comp}.
+#' @param L A matrix from \link{comp_L}.
+#' @param lambda_path The path of \eqn{lambda}s for which compute the solution. The default
+#'                    value is the output of \link{path_comp_cgl}.
+#' @param beta_start optional. A starting point for \eqn{beta}. Default value is zero. 
+#' @param u_start optional. A starting point for \eqn{u}. Default value is zero. 
+#' @param rho optional. The penalty parameter for ALM. 
+#' @param max_rho optional. The upper bound for \eqn{rho}. 
+#' @param varying_gamma logical, optional. Should the penalty parameter for internal ADMM vary at each iteration?. 
+#'                      If FALSE, it varies only at the first internal ADMM iteration. 
+#' @param gamma optional. The penalty parameter for ADMM.
+#' @param eps optional. Tolerance for ALM.
+#' @param abs_tol_int optional. Tolerance for primal feasibility condition of ADMM. 
+#' @param rel_tol_int optional. Tolerance for dual feasibility condition of ADMM.
+#' @param max_iter optional. Maximum number of iterations for ALM. 
+#' @param max_iter_int optional. Maximum number of iterations for ADMM. 
+#' @param zero_tol optional. Tolerance for setting a coefficient to zero. 
+#' @return A list containing
+#'         \enumerate{
+#'            \item \eqn{beta} A matrix whose rows are \eqn{beta} for each \eqn{lambda}.
+#'            \item \eqn{betac} A matrix whose rows are \eqn{beta_c} for each \eqn{lambda}.
+#'            \item \emph{index_null} A matrix whose rows are a vector of (0,1) for each predictor,
+#'                  one row for each \eqn{lambda}. If 1, the predictor is selected. 
+#'            \item \emph{npred} Total number of predictors selected for each \eqn{lambda}.
+#'            \item \emph{log_lambda_path} The path of \eqn{lambda} in log scale. 
+#'            \item \emph{niter} Number of iterations performed by ALM for each \eqn{lambda}.
+#'         }
 #' @export
 alm_cgl_path = function(matrices, L, lambda_path = NULL, beta_start = NULL, u_start = NULL, 
                         rho = 1, max_rho = 1e6, gamma = 1, varying_gamma = T, eps = 1e-5, 
