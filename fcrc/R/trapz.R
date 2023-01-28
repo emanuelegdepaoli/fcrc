@@ -6,7 +6,7 @@
 #' @param x \eqn{x}-coordinates of points.
 #' @param y \eqn{y}-coordinates of points.
 #' @return Approximated integral of the function. 
-
+#' @export
 trapz = function(x, y){
   l = length(x)
   xs = x[-1]-x[-l]

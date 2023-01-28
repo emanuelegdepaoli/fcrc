@@ -10,7 +10,7 @@ Description: The package contains the functions for estimating the model propose
              and its application to the time-varying effect of causes of death on 
              human longevity” by E. G. Depaoli, M. Stefanucci and S. Mazzuco.
 License: GPL (>= 2)
-Imports: Rcpp (>= 1.0.8)
-LinkingTo: Rcpp, RcppArmadillo, foreach, parallel, doParallel, fda, ggplot2
+Imports: Rcpp (>= 1.0.8), fda, foreach, ggplot2, doParallel, parallel 
+LinkingTo: Rcpp, RcppArmadillo
 RoxygenNote: 7.2.3
 Encoding: UTF-8
