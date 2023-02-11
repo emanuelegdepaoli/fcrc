@@ -22,3 +22,5 @@ presentation
 regr_lifexp_cd.Rproj
 simulations_compressed
 zeros.csv
+fcrc.Rcheck
+cv_outfile.txt

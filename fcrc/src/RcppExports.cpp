@@ -4,8 +4,7 @@
 #include <RcppArmadillo.h>
 #include <Rcpp.h>
 
-using namespace Rcpp; 
-using namespace arma;
+using namespace Rcpp;
 
 #ifdef RCPP_USE_GLOBAL_ROSTREAM
 Rcpp::Rostream<true>&  Rcpp::Rcout = Rcpp::Rcpp_cout_get();
@@ -13,17 +12,17 @@ Rcpp::Rostream<false>& Rcpp::Rcerr = Rcpp::Rcpp_cerr_get();
 #endif
 
 // admm_grplasso_path_int
-List admm_grplasso_path_int(mat const xty, mat const xtx, uvec const index, vec const lambda_path, vec beta_start, vec u_start, bool const varying_rho, double rho, double const abs_tol, double const rel_tol, int const max_iter);
+List admm_grplasso_path_int(arma::mat const xty, arma::mat const xtx, arma::uvec const index, arma::vec const lambda_path, arma::vec beta_start, arma::vec u_start, bool const varying_rho, double rho, double const abs_tol, double const rel_tol, int const max_iter);
 RcppExport SEXP _fcrc_admm_grplasso_path_int(SEXP xtySEXP, SEXP xtxSEXP, SEXP indexSEXP, SEXP lambda_pathSEXP, SEXP beta_startSEXP, SEXP u_startSEXP, SEXP varying_rhoSEXP, SEXP rhoSEXP, SEXP abs_tolSEXP, SEXP rel_tolSEXP, SEXP max_iterSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< mat const >::type xty(xtySEXP);
-    Rcpp::traits::input_parameter< mat const >::type xtx(xtxSEXP);
-    Rcpp::traits::input_parameter< uvec const >::type index(indexSEXP);
-    Rcpp::traits::input_parameter< vec const >::type lambda_path(lambda_pathSEXP);
-    Rcpp::traits::input_parameter< vec >::type beta_start(beta_startSEXP);
-    Rcpp::traits::input_parameter< vec >::type u_start(u_startSEXP);
+    Rcpp::traits::input_parameter< arma::mat const >::type xty(xtySEXP);
+    Rcpp::traits::input_parameter< arma::mat const >::type xtx(xtxSEXP);
+    Rcpp::traits::input_parameter< arma::uvec const >::type index(indexSEXP);
+    Rcpp::traits::input_parameter< arma::vec const >::type lambda_path(lambda_pathSEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type beta_start(beta_startSEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type u_start(u_startSEXP);
     Rcpp::traits::input_parameter< bool const >::type varying_rho(varying_rhoSEXP);
     Rcpp::traits::input_parameter< double >::type rho(rhoSEXP);
     Rcpp::traits::input_parameter< double const >::type abs_tol(abs_tolSEXP);
@@ -34,19 +33,19 @@ BEGIN_RCPP
 END_RCPP
 }
 // alm_cgl_path_int
-List alm_cgl_path_int(vec const J, mat const K, mat const L, uvec const index, vec u, vec u_int, vec beta, vec const lambda_path, double rho, double const max_rho, double gamma, bool const varying_gamma, double const eps, int const max_iter, int const max_iter_int, double const abs_tol_int, double const rel_tol_int);
+List alm_cgl_path_int(arma::vec const J, arma::mat const K, arma::mat const L, arma::uvec const index, arma::vec u, arma::vec u_int, arma::vec beta, arma::vec const lambda_path, double rho, double const max_rho, double gamma, bool const varying_gamma, double const eps, int const max_iter, int const max_iter_int, double const abs_tol_int, double const rel_tol_int);
 RcppExport SEXP _fcrc_alm_cgl_path_int(SEXP JSEXP, SEXP KSEXP, SEXP LSEXP, SEXP indexSEXP, SEXP uSEXP, SEXP u_intSEXP, SEXP betaSEXP, SEXP lambda_pathSEXP, SEXP rhoSEXP, SEXP max_rhoSEXP, SEXP gammaSEXP, SEXP varying_gammaSEXP, SEXP epsSEXP, SEXP max_iterSEXP, SEXP max_iter_intSEXP, SEXP abs_tol_intSEXP, SEXP rel_tol_intSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< vec const >::type J(JSEXP);
-    Rcpp::traits::input_parameter< mat const >::type K(KSEXP);
-    Rcpp::traits::input_parameter< mat const >::type L(LSEXP);
-    Rcpp::traits::input_parameter< uvec const >::type index(indexSEXP);
-    Rcpp::traits::input_parameter< vec >::type u(uSEXP);
-    Rcpp::traits::input_parameter< vec >::type u_int(u_intSEXP);
-    Rcpp::traits::input_parameter< vec >::type beta(betaSEXP);
-    Rcpp::traits::input_parameter< vec const >::type lambda_path(lambda_pathSEXP);
+    Rcpp::traits::input_parameter< arma::vec const >::type J(JSEXP);
+    Rcpp::traits::input_parameter< arma::mat const >::type K(KSEXP);
+    Rcpp::traits::input_parameter< arma::mat const >::type L(LSEXP);
+    Rcpp::traits::input_parameter< arma::uvec const >::type index(indexSEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type u(uSEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type u_int(u_intSEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type beta(betaSEXP);
+    Rcpp::traits::input_parameter< arma::vec const >::type lambda_path(lambda_pathSEXP);
     Rcpp::traits::input_parameter< double >::type rho(rhoSEXP);
     Rcpp::traits::input_parameter< double const >::type max_rho(max_rhoSEXP);
     Rcpp::traits::input_parameter< double >::type gamma(gammaSEXP);
