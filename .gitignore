@@ -2,6 +2,7 @@
 .Rhistory
 .RData
 .Ruserdata
+.Rprofile
 analysis_25countries_40causes_full.R
 analysis_25countries_40causes_full.RData
 data_anomalies
