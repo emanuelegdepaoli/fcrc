@@ -166,8 +166,9 @@ data_toplot$Sex = rep(c("M", "F"), each = nrow(data_toplotM))
 pdf("plot/rel_energy.pdf", height = 6, width = 10)
 ggplot() + geom_bar(aes(y = cum_energy, x = Year, fill = Class, group = Sex), data = data_toplot,
                     stat="identity",  width = 1) + ylab("Relative magnitude") + facet_wrap(~Sex) +
-  scale_fill_discrete(name = "Age classes") + scale_y_continuous(n.breaks = 10) +theme_bw()  +
-  scale_fill_brewer(palette = "Accent")
+  scale_fill_discrete(name = "Age classes") + 
+  scale_y_continuous(n.breaks = 10) + theme_bw() +
+  scale_fill_brewer(palette = "Accent", breaks = c("65+", "40-64", "5-39", "0-4"))
 dev.off()
 
 # save results
